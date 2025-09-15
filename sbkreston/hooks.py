@@ -124,6 +124,9 @@ app_license = "mit"
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
+has_permission = {
+    "Project": "sbkreston.sbkreston_app.project.has_permission"
+}
 
 # DocType Class
 # ---------------
