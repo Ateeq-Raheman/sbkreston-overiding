@@ -128,6 +128,17 @@ has_permission = {
     "Project": "sbkreston.sbkreston_app.project.has_permission"
 }
 
+
+import frappe
+from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
+
+def override_project_has_permission():
+    from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
+    frappe.desk.doctype.project.project.has_permission = custom_has_permission
+
+override_project_has_permission()
+
+
 # DocType Class
 # ---------------
 # Override standard doctype classes
