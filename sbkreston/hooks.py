@@ -129,14 +129,14 @@ has_permission = {
 }
 
 
-import frappe
-from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
+# import frappe
+# from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
 
-def override_project_has_permission():
-    from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
-    frappe.desk.doctype.project.project.has_permission = custom_has_permission
+# def override_project_has_permission():
+#     from sbkreston.sbkreston_app.project import has_permission as custom_has_permission
+#     frappe.desk.doctype.project.project.has_permission = custom_has_permission
 
-override_project_has_permission()
+# override_project_has_permission()
 
 
 # DocType Class
@@ -157,6 +157,12 @@ override_project_has_permission()
 # 		"on_cancel": "method",
 # 		"on_trash": "method"
 # 	}
+# }
+
+# doc_events = {
+#     "Project": {
+#         "before_insert": "sbkreston.sbkreston_app.project.project.before_insert"
+#     }
 # }
 
 # Scheduled Tasks
