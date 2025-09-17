@@ -1,25 +1,36 @@
 import frappe
 
-def has_permission(doc=None, ptype="read", user=None):
-    if not user:
-        user = frappe.session.user
+@frappe.whitelist()
+def force_create_project(project_name, branch=None, company=None, department=None):
+    if "Projects Manager" not in frappe.get_roles(frappe.session.user):
+        frappe.throw("Not allowed")
+    
+    # Create the project
+    doc = frappe.get_doc({
+        "doctype": "Project",
+        "project_name": project_name,
+        "status": "Open",
+        "is_active": "Yes",
+        "branch": branch,
+        "company": company,
+        "department": department
+    })
+    doc.insert(ignore_permissions=True)
+    frappe.db.commit()
 
-    ptype = ptype.lower()
+    restricted_roles = {"System Manager", "Projects User", "Super Admin"}
+    user = frappe.session.user
+    user_roles = set(frappe.get_roles(user))
 
-    # Allow "Projects Manager" to bypass everything
-    if "Projects Manager" in frappe.get_roles(user):
-        # Ignore user permissions for this request
-        frappe.flags.ignore_user_permissions = True
-        frappe.flags.ignore_permissions = True  # Extra safety
+    if not (user_roles & restricted_roles):
+        user_doc = frappe.get_doc("User", user)
+        user_doc.append("user_projects", {
+            "project": doc.name,
+            "branch": branch,
+            "company": company,
+            "department": department
+        })
+        user_doc.save(ignore_permissions=True)
+        frappe.db.commit()
 
-        if ptype in ["read", "write", "create", "submit", "cancel"]:
-            return True
-
-    # Default behavior
-    return False
-
-
-
-def before_insert(doc, method):
-    if "Projects Manager" in frappe.get_roles(frappe.session.user):
-        frappe.flags.ignore_permissions = True
+    return doc.name

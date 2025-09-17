@@ -44,10 +44,13 @@ app_license = "mit"
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
-
+doctype_js = {
+    "Project": [
+        "public/js/project_custom.js"
+    ]
+}
 # Svg Icons
 # ------------------
 # include app icons in desk
@@ -124,9 +127,16 @@ app_license = "mit"
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
-has_permission = {
-    "Project": "sbkreston.sbkreston_app.project.has_permission"
-}
+# doc_events = {
+#     "Project": {
+#         "before_insert": "sbkreston.sbkreston_app.project.before_insert"
+#     }
+# }
+
+# has_permission = {
+#     "Project": "sbkreston.sbkreston_app.project.has_permission"
+# }
+
 
 
 # import frappe
